@@ -81,10 +81,14 @@ def collect_accounts():
         # 备注名称（可选）
         name = get_input('备注名称（可选，便于识别）', f'站点{account_num}')
 
-        # 用户ID（可选但推荐）
-        print('\n💡 提示：有些站点需要提供用户ID才能正常签到')
+        # 用户ID（必填）
+        print('\n⚠️  重要：用户ID为必填字段，缺少会导致签到失败')
         print('   用户ID通常是你用户名中的数字，如 user_123 的ID是 123')
-        user_id = get_input('用户ID（可选，但强烈推荐填写）', '')
+        user_id = ''
+        while not user_id:
+            user_id = get_input('用户ID（必填）', '').strip()
+            if not user_id:
+                print('❌ 用户ID不能为空，请输入!')
 
         # 是否测试
         if get_yes_no('是否测试此账号配置', True):
@@ -95,10 +99,9 @@ def collect_accounts():
         account_data = {
             'url': url,
             'session': session,
+            'user_id': user_id,
             'name': name
         }
-        if user_id:
-            account_data['user_id'] = user_id
 
         accounts.append(account_data)
 

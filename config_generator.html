@@ -341,9 +341,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label>用户ID（强烈推荐）</label>
-                    <input type="text" id="userid-${accountCount}" placeholder="123">
-                    <small>你的用户ID，通常是用户名中的数字（如 user_123 的ID是 123）</small>
+                    <label>用户ID *</label>
+                    <input type="text" id="userid-${accountCount}" placeholder="123" required>
+                    <small>你的用户ID，通常是用户名中的数字（如 user_123 的ID是 123）<br>⚠️ 必填字段，缺少会导致签到失败</small>
                 </div>
 
                 <div class="form-group">
@@ -389,8 +389,8 @@
                 const userId = document.getElementById(`userid-${id}`).value.trim();
                 const name = document.getElementById(`name-${id}`).value.trim();
 
-                if (!url || !session) {
-                    alert(`账号 ${id}: URL 和 Session 不能为空`);
+                if (!url || !session || !userId) {
+                    alert(`账号 ${id}: URL、Session 和 用户ID 不能为空`);
                     hasError = true;
                     return;
                 }
@@ -398,13 +398,9 @@
                 const account = {
                     url: url.startsWith('http') ? url : 'https://' + url,
                     session: session,
+                    user_id: userId,
                     name: name || `站点${id}`
                 };
-
-                // 如果提供了用户ID，添加到配置中
-                if (userId) {
-                    account.user_id = userId;
-                }
 
                 accounts.push(account);
             });
